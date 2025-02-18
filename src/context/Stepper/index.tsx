@@ -1,4 +1,4 @@
-import { createContext, FC, useCallback, useEffect, useState } from "react";
+import { createContext, FC, useCallback, useState } from "react";
 import { IStepperContext, IStepperProps } from "./stepper.interfaces";
 
 const defaultStepperContext: IStepperContext = {
@@ -11,10 +11,6 @@ const StepperContext = createContext<IStepperContext>(defaultStepperContext);
 
 const StepperProvider: FC<IStepperProps> = ({ children }) => {
 	const [step, setStep] = useState<number>(0);
-
-	useEffect(() => {
-		sessionStorage.setItem("@step", String(step));
-	}, [step]);
 
 	const nextStep = useCallback(() => {
 		setStep((prevStep) => prevStep + 1);

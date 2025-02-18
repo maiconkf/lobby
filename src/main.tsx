@@ -6,6 +6,9 @@ import theme from "../theme";
 
 import App from "./App.tsx";
 import { StepperProvider } from "./context/Stepper/index.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const globalStyles = (
 	<GlobalStyles
@@ -23,9 +26,11 @@ createRoot(document.getElementById("root")!).render(
 	<ThemeProvider theme={theme}>
 		<StrictMode>
 			{globalStyles}
-			<StepperProvider>
-				<App />
-			</StepperProvider>
+			<QueryClientProvider client={queryClient}>
+				<StepperProvider>
+					<App />
+				</StepperProvider>
+			</QueryClientProvider>
 		</StrictMode>
 	</ThemeProvider>
 );
