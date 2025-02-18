@@ -1,9 +1,7 @@
-// useStepper.ts
 import { useContext } from "react";
-import { IStepperContext } from "./stepper.interfaces";
 import { StepperContext } from ".";
 
-function useStepper(): IStepperContext {
+const useStepper = () => {
 	const context = useContext(StepperContext);
 
 	if (!context) {
@@ -11,6 +9,6 @@ function useStepper(): IStepperContext {
 	}
 
 	return context;
-}
+};
 
 export { useStepper };

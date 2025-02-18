@@ -1,21 +1,24 @@
 import Container from "../../components/Container";
 import Box from "../../components/Box";
 import Footer from "../../components/Footer";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../services/products";
+import { useQueries } from "@tanstack/react-query";
+import { getProduct } from "../../services/products";
 import { CircularProgress, Box as BoxMui } from "@mui/material";
+import { IProduct } from "./products.interfaces";
 import Product from "../../components/Product";
 import { IOneProduct } from "../../components/Product/product.interfaces";
+import { useRedeem } from "../../context/Redeem/useRedeem";
 
 const Products = () => {
-	const {
-		data: products,
-		isLoading,
-		isError,
-		error,
-	} = useQuery({
-		queryKey: ["products"],
-		queryFn: () => getProducts(),
+	const { redeem, isLoading, isError, error } = useRedeem();
+
+	const productQueries = useQueries({
+		queries: redeem?.items
+			? redeem.items.map((product: IProduct) => ({
+					queryKey: ["product", product.customer_product_id],
+					queryFn: () => getProduct(product.customer_product_id),
+			  }))
+			: [],
 	});
 
 	return (
@@ -43,13 +46,24 @@ const Products = () => {
 							gap={1}
 							px={2}
 						>
-							{products.map((product: IOneProduct) => {
-								return <Product key={product.id} product={product} />;
+							{productQueries.map((query, index) => {
+								const { data, isLoading, isError, error } = query;
+								const product = data as IOneProduct | undefined;
+
+								return (
+									<Product
+										key={index}
+										product={product}
+										isLoading={isLoading}
+										isError={isError}
+										error={error}
+									/>
+								);
 							})}
 						</BoxMui>
 					);
 				})()}
-				<Footer />
+				{redeem?.title && <Footer company={redeem.title} />}
 			</Box>
 		</Container>
 	);

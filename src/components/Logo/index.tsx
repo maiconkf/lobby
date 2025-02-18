@@ -1,11 +1,11 @@
-const Logo = () => {
+import { Box } from "@mui/material";
+import { ILogo } from "./logo.interfaces";
+
+const Logo = ({ src }: ILogo) => {
 	return (
-		<img
-			src="/lobby-logo.svg"
-			width={189}
-			height={54}
-			alt="Logotipo da Lobby"
-		/>
+		<Box sx={{ img: { height: "auto" } }}>
+			<img src={src} width={189} height={54} alt="Logotipo da Lobby" />
+		</Box>
 	);
 };
 

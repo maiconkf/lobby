@@ -1,5 +1,8 @@
 export interface IProductProps {
-	product: IOneProduct;
+	product?: IOneProduct;
+	isLoading: boolean;
+	isError: boolean;
+	error: Error | null;
 }
 
 export interface IOneProduct {

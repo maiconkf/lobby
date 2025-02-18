@@ -1,8 +1,12 @@
 import { Box as BoxMui } from "@mui/material";
 import { IBoxProps } from "./box.interfaces";
-import theme from "../../../theme";
+import { useRedeem } from "../../context/Redeem/useRedeem";
+import createDynamicTheme from "../../../theme";
 
 const Box = ({ borderRadius, children }: IBoxProps) => {
+	const { redeem } = useRedeem();
+	const theme = createDynamicTheme(redeem);
+
 	return (
 		<BoxMui
 			p={2}

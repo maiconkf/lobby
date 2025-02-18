@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { IProductProps } from "./product.interfaces";
 
-const Product = ({ product }: IProductProps) => {
-	if (product.total_inventory === 0) return;
+const Product = ({ product, isLoading, isError, error }: IProductProps) => {
+	if (product?.total_inventory === 0) return;
 
 	return (
 		<Box
@@ -11,7 +11,7 @@ const Product = ({ product }: IProductProps) => {
 			minHeight={290}
 			display="flex"
 			alignItems="center"
-			justifyContent="space-between"
+			justifyContent={isLoading ? "center" : "space-between"}
 			flexDirection="column"
 			p={1.75}
 			borderRadius={1.5}
@@ -26,8 +26,16 @@ const Product = ({ product }: IProductProps) => {
 				},
 			}}
 		>
-			<img src={product?.image_url} width={261} height={261} />
-			<Typography component="p">{product?.full_name}</Typography>
+			{isLoading ? (
+				<CircularProgress />
+			) : isError ? (
+				<p>Erro: {error instanceof Error ? error.message : "Desconhecido"}</p>
+			) : (
+				<>
+					<img src={product?.image_url} width={261} height={261} />
+					<Typography component="p">{product?.full_name}</Typography>
+				</>
+			)}
 		</Box>
 	);
 };

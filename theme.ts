@@ -1,98 +1,95 @@
 import { createTheme } from "@mui/material/styles";
+import { IRedeem } from "./src/context/Redeem/redeem.interfaces";
 
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: "#22007F",
+const createDynamicTheme = (redeem?: IRedeem | null) => {
+	const backgroundColor = redeem?.background_color || "#EFF6FF";
+	const primaryColor = redeem?.button_color || "#22007F";
+
+	return createTheme({
+		palette: {
+			primary: {
+				main: primaryColor,
+			},
+			grey: {
+				400: "#64748B",
+				600: "#353535",
+			},
+			background: {
+				default: backgroundColor,
+			},
 		},
-		grey: {
-			400: "#64748B",
-			600: "#353535",
+		breakpoints: {
+			values: {
+				xs: 0,
+				sm: 600,
+				md: 1000,
+				lg: 1280,
+				xl: 1440,
+			},
 		},
-	},
-	breakpoints: {
-		values: {
-			xs: 0,
-			sm: 600,
-			md: 1000,
-			lg: 1280,
-			xl: 1440,
-		},
-	},
-	typography: {
-		fontFamily: "Open Sans, Arial, sans-serif",
-	},
-	components: {
-		MuiContainer: {
-			styleOverrides: {
-				root: {
-					maxWidth: 1000,
+		typography: {
+			fontFamily: "Open Sans, Arial, sans-serif",
+			h1: {
+				fontSize: 28,
+				lineHeight: 1.36,
+				fontWeight: 600,
+				color: "#353535",
+
+				[createTheme().breakpoints.up("md")]: {
+					fontSize: 40,
+				},
+			},
+			h2: {
+				fontSize: 16,
+				lineHeight: 1.36,
+				fontWeight: 400,
+				color: "#64748B",
+
+				[createTheme().breakpoints.up("md")]: {
+					fontSize: 20,
 				},
 			},
 		},
-		MuiTypography: {
-			styleOverrides: {
-				root: {
-					lineHeight: 1.36,
+		components: {
+			MuiContainer: {
+				styleOverrides: {
+					root: {
+						maxWidth: 1000,
+					},
 				},
 			},
-		},
-		MuiButton: {
-			styleOverrides: {
-				root: {
-					variants: [
-						{
-							props: { variant: "contained", color: "primary" },
-							style: {
-								boxShadow: "none !important",
-								borderRadius: 61,
-								fontSize: 14,
-								lineHeight: "19px",
-								padding: "12px 20px",
-								fontWeight: 600,
-								textTransform: "none",
+			MuiTypography: {
+				styleOverrides: {
+					root: {
+						lineHeight: 1.36,
+					},
+				},
+			},
+			MuiButton: {
+				styleOverrides: {
+					root: ({ theme }) => ({
+						// Callback para acessar o tema
+						boxShadow: "none !important",
+						borderRadius: 61,
+						fontSize: 14,
+						lineHeight: "19px",
+						padding: "12px 20px",
+						fontWeight: 600,
+						textTransform: "none",
+						backgroundColor: theme.palette.primary.main,
 
-								"&:hover": {
-									backgoundColor: "#3100B6",
-								},
-
-								"&:disabled": {
-									backgroundColor: "#C8C0DF",
-								},
-							},
+						"&:hover": {
+							backgroundColor: theme.palette.primary.dark,
 						},
-					],
+
+						"&:disabled": {
+							backgroundColor: theme.palette.primary.light,
+						},
+					}),
 				},
 			},
 		},
-	},
-});
-
-theme.typography = {
-	...theme.typography,
-
-	h1: {
-		fontFamily: "Open Sans, Arial, sans-serif",
-		fontSize: 28,
-		lineHeight: 1.36,
-		fontWeight: 600,
-		color: theme.palette.grey[600],
-
-		[theme.breakpoints.up("md")]: {
-			fontSize: 40,
-		},
-	},
-	h2: {
-		fontFamily: "Open Sans, Arial, sans-serif",
-		fontSize: 16,
-		lineHeight: 1.36,
-		fontWeight: 400,
-		color: theme.palette.grey[400],
-
-		[theme.breakpoints.up("md")]: {
-			fontSize: 20,
-		},
-	},
+	});
 };
 
-export default theme;
+export default createDynamicTheme;

@@ -1,13 +1,7 @@
 import { createContext, FC, useCallback, useState } from "react";
 import { IStepperContext, IStepperProps } from "./stepper.interfaces";
 
-const defaultStepperContext: IStepperContext = {
-	nextStep: () => {},
-	previousStep: () => {},
-	step: 0,
-};
-
-const StepperContext = createContext<IStepperContext>(defaultStepperContext);
+const StepperContext = createContext<IStepperContext | undefined>(undefined);
 
 const StepperProvider: FC<IStepperProps> = ({ children }) => {
 	const [step, setStep] = useState<number>(0);
