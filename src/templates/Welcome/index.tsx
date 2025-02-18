@@ -2,8 +2,12 @@ import { Box as BoxMui, Button, Typography } from "@mui/material";
 import Container from "../../components/Container";
 import Box from "../../components/Box";
 import Logo from "../../components/Logo";
+import { useStepper } from "../../context/Stepper/useStepper";
+import Footer from "../../components/Footer";
 
 const Welcome = () => {
+	const { nextStep } = useStepper();
+
 	return (
 		<Container>
 			<Box borderRadius={5}>
@@ -18,12 +22,11 @@ const Welcome = () => {
 							Preencha as perguntinhas a seguir para escolher o seu presente! 🎁
 						</BoxMui>
 					</Typography>
-					<Button variant="contained">Começar!</Button>
+					<Button variant="contained" onClick={nextStep}>
+						Começar!
+					</Button>
 				</BoxMui>
-				<Typography component="p" mb={1} fontSize={[12, null, 16]}>
-					© 2025 ⸱ <strong>Empresa X</strong> em parceria com a{" "}
-					<strong>Lobby</strong>
-				</Typography>
+				<Footer />
 			</Box>
 		</Container>
 	);

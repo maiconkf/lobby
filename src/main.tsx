@@ -5,6 +5,7 @@ import { GlobalStyles } from "@mui/material";
 import theme from "../theme";
 
 import App from "./App.tsx";
+import { StepperProvider } from "./context/Stepper/index.tsx";
 
 const globalStyles = (
 	<GlobalStyles
@@ -22,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
 	<ThemeProvider theme={theme}>
 		<StrictMode>
 			{globalStyles}
-			<App />
+			<StepperProvider>
+				<App />
+			</StepperProvider>
 		</StrictMode>
 	</ThemeProvider>
 );
