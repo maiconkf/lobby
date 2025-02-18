@@ -1,10 +1,9 @@
 import Container from "../../components/Container";
 import Box from "../../components/Box";
 import Footer from "../../components/Footer";
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { getProduct, getProducts } from "../../services/products";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "../../services/products";
 import { CircularProgress, Box as BoxMui } from "@mui/material";
-import { IProduct } from "./products.interfaces";
 import Product from "../../components/Product";
 import { IOneProduct } from "../../components/Product/product.interfaces";
 
@@ -16,16 +15,7 @@ const Products = () => {
 		error,
 	} = useQuery({
 		queryKey: ["products"],
-		queryFn: () => getProducts("5c7e9bc8-e063-4d86-8e2c-eccce6f3ee1c"),
-	});
-
-	const productQueries = useQueries({
-		queries: products?.items
-			? products.items.map((product: IProduct) => ({
-					queryKey: ["product", product.customer_product_id],
-					queryFn: () => getProduct(product.customer_product_id),
-			  }))
-			: [],
+		queryFn: () => getProducts(),
 	});
 
 	return (
@@ -53,19 +43,8 @@ const Products = () => {
 							gap={1}
 							px={2}
 						>
-							{productQueries.map((query, index) => {
-								const { data, isLoading, isError, error } = query;
-								const product = data as IOneProduct | undefined;
-
-								return (
-									<Product
-										key={index}
-										product={product}
-										isLoading={isLoading}
-										isError={isError}
-										error={error}
-									/>
-								);
+							{products.map((product: IOneProduct) => {
+								return <Product key={product.id} product={product} />;
 							})}
 						</BoxMui>
 					);
