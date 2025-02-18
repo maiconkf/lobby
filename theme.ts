@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, lighten } from "@mui/material/styles";
 import { IRedeem } from "./src/context/Redeem/redeem.interfaces";
 
 const createDynamicTheme = (redeem?: IRedeem | null) => {
@@ -13,6 +13,9 @@ const createDynamicTheme = (redeem?: IRedeem | null) => {
 			grey: {
 				400: "#64748B",
 				600: "#353535",
+			},
+			success: {
+				main: "#04DDB3",
 			},
 			background: {
 				default: backgroundColor,
@@ -68,7 +71,6 @@ const createDynamicTheme = (redeem?: IRedeem | null) => {
 			MuiButton: {
 				styleOverrides: {
 					root: ({ theme }) => ({
-						// Callback para acessar o tema
 						boxShadow: "none !important",
 						borderRadius: 61,
 						fontSize: 14,
@@ -83,7 +85,24 @@ const createDynamicTheme = (redeem?: IRedeem | null) => {
 						},
 
 						"&:disabled": {
-							backgroundColor: theme.palette.primary.light,
+							backgroundColor: lighten(theme.palette.primary.light, 0.4),
+							color: theme.palette.background.paper,
+						},
+					}),
+					outlined: ({ theme }) => ({
+						boxShadow: "none !important",
+						borderRadius: 61,
+						fontSize: 14,
+						lineHeight: "19px",
+						padding: "12px 20px",
+						fontWeight: 600,
+						textTransform: "none",
+						backgroundColor: theme.palette.background.paper,
+						color: theme.palette.grey[400],
+						border: `1px solid ${theme.palette.grey[400]}`,
+
+						"&:hover": {
+							backgroundColor: "#F4F4F4",
 						},
 					}),
 				},

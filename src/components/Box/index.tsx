@@ -3,13 +3,14 @@ import { IBoxProps } from "./box.interfaces";
 import { useRedeem } from "../../context/Redeem/useRedeem";
 import createDynamicTheme from "../../../theme";
 
-const Box = ({ borderRadius, children }: IBoxProps) => {
+const Box = ({ borderRadius, px, children }: IBoxProps) => {
 	const { redeem } = useRedeem();
 	const theme = createDynamicTheme(redeem);
 
 	return (
 		<BoxMui
-			p={2}
+			py={2}
+			px={px ?? 2}
 			bgcolor={theme.palette.background.paper}
 			borderRadius={borderRadius}
 			textAlign="center"

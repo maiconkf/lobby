@@ -1,20 +1,40 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { IProductProps } from "./product.interfaces";
+import CheckProduct from "../CheckProduct";
+import { useProduct } from "../../context/Product/useProduct";
+import { IProduct } from "../../templates/Products/products.interfaces";
+import { useRedeem } from "../../context/Redeem/useRedeem";
+import createDynamicTheme from "../../../theme";
 
-const Product = ({ product, isLoading, isError, error }: IProductProps) => {
-	if (product?.total_inventory === 0) return;
+const Product = ({ product }: IProductProps) => {
+	const { redeem } = useRedeem();
+	const theme = createDynamicTheme(redeem);
+
+	const { toggleProduct, selectedProducts } = useProduct();
+	const isChecked = selectedProducts.some(
+		(p) => p.customer_product_id === (product as IProduct).customer_product_id
+	);
+
+	const handleSelect = () => {
+		toggleProduct(product as IProduct);
+	};
+
+	if (product?.quantity === 0) return;
 
 	return (
 		<Box
-			border="0.5px solid #D8DCE2"
+			border={`0.5px solid ${
+				isChecked ? theme.palette.primary.main : "#D8DCE2"
+			}`}
 			width={["100%", "calc(50% - 4px)", "calc(33.33% - 8px)"]}
 			minHeight={290}
 			display="flex"
 			alignItems="center"
-			justifyContent={isLoading ? "center" : "space-between"}
+			justifyContent="space-between"
 			flexDirection="column"
 			p={1.75}
 			borderRadius={1.5}
+			position="relative"
 			sx={{
 				cursor: "pointer",
 				boxSizing: "border-box",
@@ -25,17 +45,13 @@ const Product = ({ product, isLoading, isError, error }: IProductProps) => {
 					maxWidth: 261,
 				},
 			}}
+			onClick={handleSelect}
 		>
-			{isLoading ? (
-				<CircularProgress />
-			) : isError ? (
-				<p>Erro: {error instanceof Error ? error.message : "Desconhecido"}</p>
-			) : (
-				<>
-					<img src={product?.image_url} width={261} height={261} />
-					<Typography component="p">{product?.full_name}</Typography>
-				</>
-			)}
+			<CheckProduct checked={isChecked} />
+			<img src={product?.image_url} width={261} height={261} />
+			<Typography component="p" mt={2} fontWeight={600}>
+				{product?.name}
+			</Typography>
 		</Box>
 	);
 };

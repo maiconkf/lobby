@@ -1,29 +1,26 @@
 import Container from "../../components/Container";
 import Box from "../../components/Box";
 import Footer from "../../components/Footer";
-import { useQueries } from "@tanstack/react-query";
-import { getProduct } from "../../services/products";
-import { CircularProgress, Box as BoxMui } from "@mui/material";
-import { IProduct } from "./products.interfaces";
+import {
+	CircularProgress,
+	Box as BoxMui,
+	Typography,
+	Button,
+} from "@mui/material";
 import Product from "../../components/Product";
-import { IOneProduct } from "../../components/Product/product.interfaces";
 import { useRedeem } from "../../context/Redeem/useRedeem";
+import { IProduct } from "./products.interfaces";
+import { useProduct } from "../../context/Product/useProduct";
+import { useStepper } from "../../context/Stepper/useStepper";
 
 const Products = () => {
+	const { previousStep, nextStep } = useStepper();
 	const { redeem, isLoading, isError, error } = useRedeem();
-
-	const productQueries = useQueries({
-		queries: redeem?.items
-			? redeem.items.map((product: IProduct) => ({
-					queryKey: ["product", product.customer_product_id],
-					queryFn: () => getProduct(product.customer_product_id),
-			  }))
-			: [],
-	});
+	const { selectedProducts } = useProduct();
 
 	return (
 		<Container>
-			<Box borderRadius={5}>
+			<Box borderRadius={5} px={4}>
 				{(() => {
 					if (isLoading) {
 						return <CircularProgress />;
@@ -39,30 +36,45 @@ const Products = () => {
 					}
 
 					return (
-						<BoxMui
-							display="flex"
-							justifyContent="space-between"
-							flexWrap="wrap"
-							gap={1}
-							px={2}
-						>
-							{productQueries.map((query, index) => {
-								const { data, isLoading, isError, error } = query;
-								const product = data as IOneProduct | undefined;
+						<>
+							<Typography component="p" my={2} fontWeight={600} fontSize={20}>
+								Escolha o seu presente! 🎁
+							</Typography>
 
-								return (
-									<Product
-										key={index}
-										product={product}
-										isLoading={isLoading}
-										isError={isError}
-										error={error}
-									/>
-								);
-							})}
-						</BoxMui>
+							<BoxMui
+								display="flex"
+								justifyContent="space-between"
+								flexWrap="wrap"
+								gap={1.5}
+								pt={2}
+								pb={4}
+							>
+								{redeem?.items.map((item, index) => {
+									const product = item as IProduct;
+
+									return <Product key={index} product={product} />;
+								})}
+							</BoxMui>
+						</>
 					);
 				})()}
+				<BoxMui
+					display="flex"
+					justifyContent="space-between"
+					width="100%"
+					mb={4}
+				>
+					<Button variant="outlined" onClick={previousStep}>
+						Voltar
+					</Button>
+					<Button
+						variant="contained"
+						onClick={nextStep}
+						disabled={selectedProducts.length === 0}
+					>
+						Continuar
+					</Button>
+				</BoxMui>
 				{redeem?.title && <Footer company={redeem.title} />}
 			</Box>
 		</Container>
