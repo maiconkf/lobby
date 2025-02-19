@@ -514,9 +514,12 @@ const FormTemplate = () => {
 											name="state"
 											render={({ field }) => (
 												<>
-													<InputLabel sx={{ left: -14 }}>Estado *</InputLabel>
+													<InputLabel sx={{ left: -14 }} id="state-label">
+														Estado *
+													</InputLabel>
 													<Select
 														{...field}
+														labelId="state-label"
 														value={field.value || ""}
 														variant="standard"
 														onChange={(e) => {
@@ -552,8 +555,15 @@ const FormTemplate = () => {
 											name="country"
 											render={({ field }) => (
 												<>
-													<InputLabel sx={{ left: -14 }}>País *</InputLabel>
-													<Select {...field} variant="standard" required>
+													<InputLabel sx={{ left: -14 }} id="country-label">
+														País *
+													</InputLabel>
+													<Select
+														{...field}
+														variant="standard"
+														required
+														labelId="country-label"
+													>
 														<MenuItem value="Brasil">Brasil</MenuItem>
 													</Select>
 													{errors.country &&
