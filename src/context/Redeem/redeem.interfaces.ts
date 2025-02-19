@@ -1,6 +1,7 @@
 import { IProduct } from "../../templates/Products/products.interfaces";
 
 export interface IRedeem {
+	id?: string | undefined;
 	logo_url: string;
 	welcome_title: string;
 	welcome_phrase: string;

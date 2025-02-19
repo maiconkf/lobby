@@ -33,22 +33,10 @@ export const formSchema = (redeem: IRedeem, selectedProducts: IProduct[]) =>
 			then: (schema) => schema.required("Campo obrigatório"),
 			otherwise: (schema) => schema.notRequired(),
 		}),
-		extra_questions: yup.lazy(() => {
-			if (redeem.extra_questions.length === 0) {
-				return yup.object().default({});
-			}
-
-			return yup
-				.object()
-				.shape(
-					redeem.extra_questions.reduce((acc, question) => {
-						acc[String(question.id)] = yup
-							.mixed<string | number>()
-							.defined()
-							.notRequired();
-						return acc;
-					}, {} as Record<string, yup.Schema>)
-				)
-				.default({});
-		}),
+		extra_question_responses: yup.array().of(
+			yup.object().shape({
+				extra_question_id: yup.number().optional(), // Pode estar ausente
+				answer: yup.string().optional(), // Pode estar ausente
+			})
+		),
 	});

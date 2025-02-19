@@ -23,8 +23,11 @@ import { fetchAddressByCep } from "../../services/cep";
 import { IFormData } from "./form.interfaces";
 import { useProduct } from "../../context/Product/useProduct";
 import { IExtraQuestions } from "../../context/Redeem/redeem.interfaces";
+import { useRedeemerMutation } from "../../services/redeems";
 
 const FormTemplate = () => {
+	const mutation = useRedeemerMutation();
+
 	const { redeem } = useRedeem();
 	const { selectedProducts } = useProduct();
 	const theme = createDynamicTheme(redeem);
@@ -65,16 +68,42 @@ const FormTemplate = () => {
 		control,
 		setValue,
 		formState: { errors },
+		register,
 	} = useForm({
 		mode: "onSubmit",
 		resolver: yupResolver(formSchema(redeem!, selectedProducts)),
-		defaultValues: {
-			extra_questions: {},
-		},
 	});
 
-	const onSubmit = (data) => {
-		console.log(data);
+	const onSubmit = (data: IFormData) => {
+		const validData = {
+			id: redeem?.id ?? "",
+			redeemer_name: data.full_name,
+			redeemer_email: data.email,
+			redeemer_document_number: data.cpf_cnpj,
+			redeemer_zipcode: data.cep,
+			redeemer_street: data.street,
+			redeemer_number: String(data.number),
+			redeemer_complement: data.complement ?? "",
+			redeemer_neighborhood: data.neighborhood,
+			redeemer_city: data.city,
+			redeemer_state: data.state,
+			redeemer_country: data.country,
+			extra_question_responses:
+				data.extra_question_responses?.map((q) => ({
+					extra_question_id: q.extra_question_id ?? 0,
+					answer: q.answer ?? "",
+				})) || [],
+			items: selectedProducts.map((product) => ({
+				customer_product_id: product.customer_product_id ?? "",
+				size_name: product.sizes.length > 0 ? product.sizes[0].name : "",
+			})),
+		};
+
+		mutation.mutate(validData, {
+			onError: (error) => {
+				console.error("Error:", error);
+			},
+		});
 	};
 
 	const renderError = (message: string) => (
@@ -601,17 +630,22 @@ const FormTemplate = () => {
 							</Typography>
 
 							<Grid2 container spacing={3} width="100%">
-								{redeem.extra_questions.map((question) => (
+								{redeem.extra_questions.map((question, idx) => (
 									<Grid2 size={[12, null, 6]} key={question.id}>
 										<FormControl
 											fullWidth
 											sx={{ textAlign: "left", mt: [1, null, 2] }}
 										>
+											<input
+												type="hidden"
+												{...register(
+													`extra_question_responses.${idx}.extra_question_id`
+												)}
+												value={question.id}
+											/>
 											<Controller
 												control={control}
-												name={
-													`extra_questions.${question.id}` as keyof IFormData
-												}
+												name={`extra_question_responses.${idx}.answer`}
 												render={({ field }) =>
 													renderExtraQuestions(question, {
 														...field,

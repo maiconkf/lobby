@@ -17,8 +17,6 @@ const ProductProvider = ({ children }: { children: ReactNode }) => {
 		);
 	};
 
-	console.log(selectedProducts);
-
 	return (
 		<ProductContext.Provider value={{ selectedProducts, toggleProduct }}>
 			{children}
