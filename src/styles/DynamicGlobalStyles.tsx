@@ -10,7 +10,10 @@ const DynamicGlobalStyles = () => {
 				body: {
 					margin: 0,
 					padding: 0,
-					backgroundColor: redeem?.background_color || "#EFF6FF",
+					backgroundColor:
+						redeem && redeem.status === "ACTIVE"
+							? redeem.background_color
+							: "#FFF",
 				},
 			}}
 		/>

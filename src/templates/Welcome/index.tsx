@@ -42,18 +42,14 @@ const Welcome = () => {
 									</Typography>
 									<Typography variant="h2" mb={[8, null, 4]}>
 										{redeem.welcome_phrase}
-										{redeem.status === "ACTIVE" && (
-											<BoxMui component="span" mt={1} display="block">
-												Preencha as perguntinhas a seguir para escolher o seu
-												presente! 🎁
-											</BoxMui>
-										)}
+										<BoxMui component="span" mt={1} display="block">
+											Preencha as perguntinhas a seguir para escolher o seu
+											presente! 🎁
+										</BoxMui>
 									</Typography>
-									{redeem.status === "ACTIVE" && (
-										<Button variant="contained" onClick={nextStep}>
-											Começar!
-										</Button>
-									)}
+									<Button variant="contained" onClick={nextStep}>
+										Começar!
+									</Button>
 								</>
 							);
 						}
