@@ -24,11 +24,13 @@ import { IFormData } from "./form.interfaces";
 import { useProduct } from "../../context/Product/useProduct";
 import { IExtraQuestions } from "../../context/Redeem/redeem.interfaces";
 import { useRedeemerMutation } from "../../services/redeems";
+import { useStepper } from "../../context/Stepper/useStepper";
 
 const FormTemplate = () => {
 	const mutation = useRedeemerMutation();
 
 	const { redeem } = useRedeem();
+	const { nextStep } = useStepper();
 	const { selectedProducts } = useProduct();
 	const theme = createDynamicTheme(redeem);
 	const [cep, setCep] = useState("");
@@ -100,6 +102,7 @@ const FormTemplate = () => {
 		};
 
 		mutation.mutate(validData, {
+			onSuccess: () => nextStep(),
 			onError: (error) => {
 				console.error("Error:", error);
 			},

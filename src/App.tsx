@@ -4,6 +4,7 @@ import { useStepper } from "./context/Stepper/useStepper";
 import Products from "./templates/Products";
 import { ProductProvider } from "./context/Product";
 import FormTemplate from "./templates/Form";
+import Success from "./templates/Success";
 
 const App = () => {
 	const { step } = useStepper();
@@ -17,6 +18,7 @@ const App = () => {
 					{step === 2 && <FormTemplate />}
 				</ProductProvider>
 			)}
+			{step === 3 && <Success />}
 		</Box>
 	);
 };
