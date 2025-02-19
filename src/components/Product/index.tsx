@@ -26,7 +26,7 @@ const Product = ({ product }: IProductProps) => {
 			border={`0.5px solid ${
 				isChecked ? theme.palette.primary.main : "#D8DCE2"
 			}`}
-			width={["100%", "calc(50% - 4px)", "calc(33.33% - 8px)"]}
+			width={["100%", "calc(50% - 8px)", "calc(33.33% - 8px)"]}
 			minHeight={290}
 			display="flex"
 			alignItems="center"

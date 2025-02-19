@@ -11,6 +11,7 @@ const createDynamicTheme = (redeem?: IRedeem | null) => {
 				main: primaryColor,
 			},
 			grey: {
+				200: "#B1B9C5",
 				400: "#64748B",
 				600: "#353535",
 			},
@@ -104,6 +105,20 @@ const createDynamicTheme = (redeem?: IRedeem | null) => {
 						"&:hover": {
 							backgroundColor: "#F4F4F4",
 						},
+					}),
+				},
+			},
+			MuiInput: {
+				styleOverrides: {
+					input: ({ theme }) => ({
+						color: theme.palette.grey[600],
+					}),
+				},
+			},
+			MuiFormLabel: {
+				styleOverrides: {
+					root: ({ theme }) => ({
+						color: theme.palette.grey[200],
 					}),
 				},
 			},

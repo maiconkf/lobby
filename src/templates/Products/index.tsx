@@ -1,22 +1,16 @@
 import Container from "../../components/Container";
 import Box from "../../components/Box";
 import Footer from "../../components/Footer";
-import {
-	CircularProgress,
-	Box as BoxMui,
-	Typography,
-	Button,
-} from "@mui/material";
+import { CircularProgress, Box as BoxMui, Typography } from "@mui/material";
 import Product from "../../components/Product";
 import { useRedeem } from "../../context/Redeem/useRedeem";
 import { IProduct } from "./products.interfaces";
-import { useProduct } from "../../context/Product/useProduct";
+import BoxFooter from "../../components/Footer/Box";
 import { useStepper } from "../../context/Stepper/useStepper";
 
 const Products = () => {
-	const { previousStep, nextStep } = useStepper();
 	const { redeem, isLoading, isError, error } = useRedeem();
-	const { selectedProducts } = useProduct();
+	const { nextStep } = useStepper();
 
 	return (
 		<Container>
@@ -58,23 +52,7 @@ const Products = () => {
 						</>
 					);
 				})()}
-				<BoxMui
-					display="flex"
-					justifyContent="space-between"
-					width="100%"
-					mb={4}
-				>
-					<Button variant="outlined" onClick={previousStep}>
-						Voltar
-					</Button>
-					<Button
-						variant="contained"
-						onClick={nextStep}
-						disabled={selectedProducts.length === 0}
-					>
-						Continuar
-					</Button>
-				</BoxMui>
+				<BoxFooter onClick={nextStep} />
 				{redeem?.title && <Footer company={redeem.title} />}
 			</Box>
 		</Container>

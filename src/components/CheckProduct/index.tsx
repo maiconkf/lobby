@@ -15,7 +15,7 @@ const CheckProduct = ({ checked }: ICheckProduct) => {
 		  }
 		: {
 				bgcolor: theme.palette.background.paper,
-				border: "1px solid #B1B9C5",
+				border: `1px solid ${theme.palette.grey[200]}`,
 		  };
 
 	return (

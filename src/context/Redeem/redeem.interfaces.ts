@@ -9,6 +9,7 @@ export interface IRedeem {
 	button_color: string;
 	status: string;
 	items: IProduct[];
+	extra_questions: IExtraQuestions[];
 }
 
 export interface IRedeemContext {
@@ -16,4 +17,12 @@ export interface IRedeemContext {
 	isLoading: boolean;
 	isError: boolean;
 	error: Error | null;
+}
+
+export interface IExtraQuestions {
+	id: number;
+	answer_type: string;
+	options: string[];
+	position: number;
+	question: string;
 }
