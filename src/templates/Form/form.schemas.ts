@@ -1,9 +1,8 @@
 import * as yup from "yup";
 import { validateCpfCnpj } from "../../utils";
-import { IRedeem } from "../../context/Redeem/redeem.interfaces";
 import { IProduct } from "../Products/products.interfaces";
 
-export const formSchema = (redeem: IRedeem, selectedProducts: IProduct[]) =>
+export const formSchema = (selectedProducts: IProduct[]) =>
 	yup.object().shape({
 		full_name: yup.string().required("Campo obrigatório"),
 		cpf_cnpj: yup
@@ -35,8 +34,8 @@ export const formSchema = (redeem: IRedeem, selectedProducts: IProduct[]) =>
 		}),
 		extra_question_responses: yup.array().of(
 			yup.object().shape({
-				extra_question_id: yup.number().optional(), // Pode estar ausente
-				answer: yup.string().optional(), // Pode estar ausente
+				extra_question_id: yup.number().optional(),
+				answer: yup.string().optional(),
 			})
 		),
 	});

@@ -73,7 +73,7 @@ const FormTemplate = () => {
 		register,
 	} = useForm({
 		mode: "onSubmit",
-		resolver: yupResolver(formSchema(redeem!, selectedProducts)),
+		resolver: yupResolver(formSchema(selectedProducts)),
 	});
 
 	const onSubmit = (data: IFormData) => {
