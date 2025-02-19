@@ -6,7 +6,7 @@ export interface IProduct {
 	image_url: string;
 	sizes_grid: {
 		name: string;
-	};
+	} | null;
 	sizes: Array<{
 		id: string;
 		name: string;
